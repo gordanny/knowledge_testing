@@ -22,4 +22,4 @@ app.add_middleware(
 app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8088, log_level='debug')
+    uvicorn.run(app, host="0.0.0.0", port=8081, log_level='debug')
