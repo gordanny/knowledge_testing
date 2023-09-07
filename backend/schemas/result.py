@@ -1,5 +1,6 @@
 from pydantic import Field, BaseModel
 
+from schemas.answer import RightAnswers
 from schemas.base import BaseFromOrmModel
 
 
@@ -21,3 +22,4 @@ class ResultRead(ResultCreate):
 class ResultResponse(BaseModel):
     is_success: bool = Field(serialization_alias='isSuccess')
     percent: int
+    right_answers: list[RightAnswers] = Field(serialization_alias='rightAnswers')

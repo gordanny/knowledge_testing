@@ -37,7 +37,11 @@ const Main: React.FunctionComponent<IMainProps> = () => {
               </p>
             </AccordionSummary>
             <AccordionDetails>
-              <Test questions={test.questions} testId={test.id} />
+              <Test
+                questions={test.questions}
+                testId={test.id}
+                testDescription={test.description}
+              />
             </AccordionDetails>
           </Accordion>
         );

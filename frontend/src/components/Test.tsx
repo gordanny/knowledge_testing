@@ -19,36 +19,57 @@ import TestResultModal from './TestResultModal';
 export interface ITestProps {
   testId: number;
   questions?: IQuestion[];
+  testDescription: string;
 }
 
-const Test: React.FunctionComponent<ITestProps> = ({ testId, questions }) => {
+const Test: React.FunctionComponent<ITestProps> = ({
+  testId,
+  questions,
+  testDescription,
+}) => {
   const { user } = useTypedSelector(state => state.auth);
   const [results, setResults] = React.useState({});
   const [modalOpen, setModalOpen] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(undefined);
   const [rightAnswersPercent, setRightAnswersPercent] = React.useState(0);
+  const [testResult, setTestResult] = React.useState([]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    questionId: number
+    questionId: number,
+    questionNumber: number
   ) => {
     setResults({
       ...results,
-      [questionId]: (event.target as HTMLInputElement).value,
+      [questionNumber]: {
+        questionId: questionId,
+        answerId: (event.target as HTMLInputElement).value,
+      },
     });
   };
-
   const handleClick = async () => {
     const response = await axios.post<IResult>('/api/v1/attempts/add', {
       username: user.username ?? 'admin',
       testId: testId,
       userAnswers: Object.keys(results).map(key => {
-        return {
-          questionId: key,
-          answerId: results[key],
-        };
+        return results[key];
       }),
     });
+    setTestResult(
+      response.data.rightAnswers.map(rightAnswer => {
+        const userAnswer = results[rightAnswer.questionNumber].answerId;
+        const question = questions?.find(
+          q => q.questionNumber === rightAnswer.questionNumber
+        );
+        return {
+          questionNumber: rightAnswer.questionNumber,
+          questionDescription: question.description,
+          userAnswer: question.answers.find(a => a.id == userAnswer).text,
+          rightAnswer: rightAnswer.answer,
+          isRight: userAnswer === rightAnswer.answer,
+        };
+      })
+    );
     setIsSuccess(response.data.isSuccess);
     setRightAnswersPercent(response.data.percent);
     setResults({});
@@ -66,8 +87,10 @@ const Test: React.FunctionComponent<ITestProps> = ({ testId, questions }) => {
                   {question.description}
                 </FormLabel>
                 <RadioGroup
-                  value={results[question.id] ?? ''}
-                  onChange={e => handleChange(e, question.id)}
+                  value={results[question.questionNumber]?.answerId ?? ''}
+                  onChange={e =>
+                    handleChange(e, question.id, question.questionNumber)
+                  }
                   row
                 >
                   {question.answers.map(answer => {
@@ -98,6 +121,8 @@ const Test: React.FunctionComponent<ITestProps> = ({ testId, questions }) => {
         setOpen={setModalOpen}
         isSuccess={isSuccess}
         rightAnswersPercent={rightAnswersPercent}
+        testResult={testResult}
+        testDescription={testDescription}
       />
     </>
   );

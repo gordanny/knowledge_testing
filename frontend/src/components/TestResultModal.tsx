@@ -1,11 +1,17 @@
 import { Box, Modal, Typography } from '@mui/material';
 import React from 'react';
 
+import { ITestResultRow } from '../models/ITestResultRow';
+
+import ResultTable from './ResultTable';
+
 export interface ITestResultModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  testResult: ITestResultRow[];
   isSuccess: boolean;
   rightAnswersPercent: number;
+  testDescription: string;
 }
 
 const style = {
@@ -13,7 +19,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -25,16 +30,25 @@ const TestResultModal: React.FunctionComponent<ITestResultModalProps> = ({
   setOpen,
   isSuccess,
   rightAnswersPercent,
+  testResult,
+  testDescription,
 }) => {
   const handleClose = () => setOpen(false);
-  const bgColor = isSuccess ? 'green' : 'red';
 
   return (
     <div>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style} style={{ backgroundColor: bgColor }}>
-          <Typography variant='h6' component='h2'>
-            {isSuccess}
+        <Box sx={style}>
+          <ResultTable
+            testResult={testResult}
+            isSuccess={isSuccess}
+            testDescription={testDescription}
+          />
+          <Typography
+            variant='h6'
+            component='h2'
+            style={{ paddingTop: '10px' }}
+          >
             {`Вы ответили правильно на ${rightAnswersPercent}% вопросов`}
           </Typography>
         </Box>
