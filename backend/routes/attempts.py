@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from crud import create_results
 from crud.answers import get_right_answers_by_test_id
@@ -6,13 +6,14 @@ from crud.attempts import create_attempt
 from schemas.attempt import AttemptCreateRequest, AttemptCreate
 from schemas.result import ResultResponse, ResultCreate
 from utils.check_test_success import check_test_success
+from utils.current_user import get_current_user
 from utils.get_right_answers_percent import get_right_answers_percent
 
 router = APIRouter()
 
 
 @router.post('/add', response_model=ResultResponse)
-async def add_attempt(attempt: AttemptCreateRequest):
+async def add_attempt(attempt: AttemptCreateRequest = Depends(get_current_user)):
     user_answers_ids = [answer.user_answer_id for answer in attempt.user_answers]
     right_answers_percent = get_right_answers_percent(user_answers_ids)
     right_answers = get_right_answers_by_test_id(attempt.test_id)

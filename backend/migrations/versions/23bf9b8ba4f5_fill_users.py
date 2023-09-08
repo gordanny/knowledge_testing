@@ -11,7 +11,7 @@ from sqlalchemy import delete, insert
 from sqlalchemy.orm import Session
 
 from models.User import User
-from utils.hash_password import hash_password
+from utils.hash_password import get_hashed_password
 
 # revision identifiers, used by Alembic.
 revision: str = '23bf9b8ba4f5'
@@ -22,13 +22,13 @@ depends_on: Union[str, Sequence[str], None] = None
 users = [
     {
         'username': 'test',
-        'password': hash_password('test'),
+        'password': get_hashed_password('test'),
         'fio': 'Тестер Тестирович Тестеров',
         'is_admin': False
     },
     {
         'username': 'admin',
-        'password': hash_password('admin'),
+        'password': get_hashed_password('admin'),
         'fio': 'Админ Админович Админов',
         'is_admin': True
     },

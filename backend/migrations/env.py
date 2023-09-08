@@ -10,7 +10,6 @@ from models.Question import Question
 from models.Result import Result
 from models.Test import Test
 from models.TestQuestion import TestQuestion
-from models.Token import Token
 from models.User import User
 
 # this is the Alembic Config object, which provides
@@ -26,7 +25,6 @@ models = [
     Result.__tablename__,
     Test.__tablename__,
     TestQuestion.__tablename__,
-    Token.__tablename__,
     User.__tablename__,
 ]
 

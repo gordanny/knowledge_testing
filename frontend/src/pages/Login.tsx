@@ -8,7 +8,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import { RouteNames } from '../enums/routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { AuthActionCreators } from '../store/reducers/auth/action-creators';
 
@@ -19,10 +21,15 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { error, isLoading } = useTypedSelector(state => state.auth);
 
-  const onClick = () => {
+  const loginHandler = () => {
     dispatch(AuthActionCreators.login(username, password));
+  };
+
+  const registrationHandler = () => {
+    return navigate(RouteNames.REGISTRATION);
   };
 
   return (
@@ -61,7 +68,8 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
             onChange={event => setPassword(event.target.value)}
           />
           {error && <div style={{ color: 'red' }}>{error}</div>}
-          <Button onClick={onClick}>Войти</Button>
+          <Button onClick={loginHandler}>Войти</Button>
+          <Button onClick={registrationHandler}>Регистрация</Button>
         </Grid>
       </Card>
     </Grid>
