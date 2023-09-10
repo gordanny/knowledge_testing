@@ -7,9 +7,9 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
-import axios from 'axios';
 import React from 'react';
 
+import api from '../api';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { IQuestion } from '../models/IQuestion';
 import { IResult } from '../models/IResult';
@@ -48,9 +48,9 @@ const Test: React.FunctionComponent<ITestProps> = ({
     });
   };
   const handleClick = async () => {
-    const response = await axios.post<IResult>('/api/v1/attempts/add', {
-      username: user.username ?? 'admin',
-      testId: testId,
+    const response = await api.post<IResult>('/api/v1/attempts/add', {
+      username: user.username,
+      testId,
       userAnswers: Object.keys(results).map(key => {
         return results[key];
       }),

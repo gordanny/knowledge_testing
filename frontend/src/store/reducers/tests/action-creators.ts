@@ -1,22 +1,21 @@
-import axios from 'axios';
-
+import api from '../../../api';
 import { ITest } from '../../../models/ITest';
 import { AppDispatch } from '../../index';
 
 import {
   TestsActionType,
-  SetErrorAction,
-  SetIsLoadingAction,
+  SetTestsErrorAction,
+  SetTestsIsLoadingAction,
   SetTestsAction,
 } from './types';
 
 export const TestsActionCreators = {
-  setError: (payload: string): SetErrorAction => ({
-    type: TestsActionType.SET_ERROR,
+  setTestsError: (payload: string): SetTestsErrorAction => ({
+    type: TestsActionType.SET_TESTS_ERROR,
     payload,
   }),
-  setIsLoading: (payload: boolean): SetIsLoadingAction => ({
-    type: TestsActionType.SET_IS_LOADING,
+  setTestsIsLoading: (payload: boolean): SetTestsIsLoadingAction => ({
+    type: TestsActionType.SET_TESTS_IS_LOADING,
     payload,
   }),
   setTests: (tests: ITest[]): SetTestsAction => ({
@@ -25,18 +24,18 @@ export const TestsActionCreators = {
   }),
   getTests: () => async (dispatch: AppDispatch) => {
     try {
-      dispatch(TestsActionCreators.setIsLoading(true));
-      const response = await axios.get<ITest[]>('/api/v1/tests');
+      dispatch(TestsActionCreators.setTestsIsLoading(true));
+      const response = await api.get<ITest[]>('/api/v1/tests');
       const tests = response.data;
       if (tests) {
         dispatch(TestsActionCreators.setTests(tests));
       } else {
-        dispatch(TestsActionCreators.setError('Тесты не найдены'));
+        dispatch(TestsActionCreators.setTestsError('Тесты не найдены'));
       }
-      dispatch(TestsActionCreators.setIsLoading(false));
+      dispatch(TestsActionCreators.setTestsIsLoading(false));
     } catch (e) {
-      dispatch(TestsActionCreators.setError('Произошла ошибка запроса'));
-      dispatch(TestsActionCreators.setIsLoading(false));
+      dispatch(TestsActionCreators.setTestsError('Произошла ошибка запроса'));
+      dispatch(TestsActionCreators.setTestsIsLoading(false));
     }
   },
 };

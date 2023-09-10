@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from starlette.responses import JSONResponse
 
 from crud.user import get_user_by_username
 from schemas.user import UserLoginRequest, UserAuthResponse, UserResponse
@@ -20,8 +21,11 @@ async def login(form_data: UserLoginRequest):
     ):
         raise HTTPException(status_code=400, detail='Incorrect username or password')
 
-    return UserAuthResponse(
+    content = UserAuthResponse(
         user=UserResponse(**user.model_dump(exclude='password')),
         access_token=create_access_token(user.username),
-        refresh_token=create_refresh_token(user.username),
     )
+    response = JSONResponse(content=content.model_dump(by_alias=True))
+    response.set_cookie(key="refresh_token", value=create_refresh_token(user.username))
+
+    return response

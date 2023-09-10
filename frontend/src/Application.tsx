@@ -1,8 +1,9 @@
+import { Backdrop, CircularProgress, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
+import PrivateRoutes from './components/PrivateRoutes';
 import { RouteNames } from './enums/routes';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import Login from './pages/Login';
@@ -19,16 +20,35 @@ const Application: React.FunctionComponent<IApplicationProps> = () => {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(AuthActionCreators.check_auth());
+    } else {
+      dispatch(AuthActionCreators.setIsAuth(false));
     }
   }, [dispatch]);
 
+  if (isAuth === undefined) {
+    return (
+      <Grid
+        container
+        justifyContent={'center'}
+        alignItems={'center'}
+        direction={'column'}
+        sx={{ minHeight: '100vh' }}
+      >
+        <Backdrop style={{ zIndex: 100 }} open={true}>
+          <CircularProgress color='primary' />
+        </Backdrop>
+      </Grid>
+    );
+  }
+
   return (
     <BrowserRouter>
-      {isAuth && <Navbar />}
       <Routes>
-        {isAuth && <Route path={RouteNames.ALL} element={<Main />} />}
+        <Route element={<PrivateRoutes />}>
+          <Route path={RouteNames.MAIN} element={<Main />} />
+        </Route>
         <Route path={RouteNames.REGISTRATION} element={<Registration />} />
-        <Route path={RouteNames.ALL} element={<Login />} />
+        <Route path={RouteNames.LOGIN} element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

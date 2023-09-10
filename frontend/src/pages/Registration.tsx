@@ -1,9 +1,8 @@
 import { Button, Card, Grid, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import api from '../api';
 import { RouteNames } from '../enums/routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import AuthService from '../services/AuthService';
@@ -13,7 +12,6 @@ export interface IRegistrationProps {}
 
 const Registration: React.FunctionComponent<IRegistrationProps> = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { isAuth } = useTypedSelector(state => state.auth);
 
@@ -23,11 +21,9 @@ const Registration: React.FunctionComponent<IRegistrationProps> = () => {
   const [fio, setFio] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate(RouteNames.MAIN);
-    }
-  }, [navigate, isAuth]);
+  if (isAuth) {
+    return <Navigate to={RouteNames.MAIN} />;
+  }
 
   const validatePassword = (password: string, repeatPassword: string) => {
     return password === repeatPassword;
@@ -45,7 +41,7 @@ const Registration: React.FunctionComponent<IRegistrationProps> = () => {
   };
 
   const loginHandler = () => {
-    return navigate(RouteNames.LOGIN);
+    return <Navigate to={RouteNames.LOGIN} />;
   };
 
   return (

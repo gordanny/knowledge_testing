@@ -2,20 +2,20 @@ import { IUser } from '../../../models/IUser';
 
 export interface AuthState {
   error: string;
-  isAuth: boolean;
+  isAuth?: boolean;
   isLoading: boolean;
   user: IUser;
 }
 
 export enum AuthActionType {
-  SET_ERROR = 'SET_ERROR',
+  SET_AUTH_ERROR = 'SET_AUTH_ERROR',
   SET_IS_AUTH = 'SET_IS_AUTH',
-  SET_IS_LOADING = 'SET_IS_LOADING',
-  SET_USER = 'SET_USER',
+  SET_AUTH_IS_LOADING = 'SET_AUTH_IS_LOADING',
+  SET_AUTH_USER = 'SET_AUTH_USER',
 }
 
-export interface SetErrorAction {
-  type: AuthActionType.SET_ERROR;
+export interface SetAuthErrorAction {
+  type: AuthActionType.SET_AUTH_ERROR;
   payload: string;
 }
 
@@ -24,18 +24,18 @@ export interface SetIsAuthAction {
   payload: boolean;
 }
 
-export interface SetIsLoadingAction {
-  type: AuthActionType.SET_IS_LOADING;
+export interface SetAuthIsLoadingAction {
+  type: AuthActionType.SET_AUTH_IS_LOADING;
   payload: boolean;
 }
 
-export interface SetUserAction {
-  type: AuthActionType.SET_USER;
+export interface SetAuthUserAction {
+  type: AuthActionType.SET_AUTH_USER;
   payload: IUser;
 }
 
 export type AuthAction =
-  | SetErrorAction
+  | SetAuthErrorAction
   | SetIsAuthAction
-  | SetIsLoadingAction
-  | SetUserAction;
+  | SetAuthIsLoadingAction
+  | SetAuthUserAction;

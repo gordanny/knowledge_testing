@@ -7,18 +7,18 @@ export interface TestsState {
 }
 
 export enum TestsActionType {
-  SET_ERROR = 'SET_ERROR',
-  SET_IS_LOADING = 'SET_IS_LOADING',
+  SET_TESTS_ERROR = 'SET_TESTS_ERROR',
+  SET_TESTS_IS_LOADING = 'SET_TESTS_IS_LOADING',
   SET_TESTS = 'SET_TESTS',
 }
 
-export interface SetErrorAction {
-  type: TestsActionType.SET_ERROR;
+export interface SetTestsErrorAction {
+  type: TestsActionType.SET_TESTS_ERROR;
   payload: string;
 }
 
-export interface SetIsLoadingAction {
-  type: TestsActionType.SET_IS_LOADING;
+export interface SetTestsIsLoadingAction {
+  type: TestsActionType.SET_TESTS_IS_LOADING;
   payload: boolean;
 }
 
@@ -27,4 +27,7 @@ export interface SetTestsAction {
   payload: ITest[];
 }
 
-export type TestsAction = SetErrorAction | SetIsLoadingAction | SetTestsAction;
+export type TestsAction =
+  | SetTestsErrorAction
+  | SetTestsIsLoadingAction
+  | SetTestsAction;

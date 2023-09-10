@@ -11,6 +11,10 @@ export default class AuthService {
     return api.post<AuthResponse>('/api/v1/login', { username, password });
   }
 
+  static async refreshToken(): Promise<AxiosResponse<AuthResponse>> {
+    return api.get<AuthResponse>('/api/v1/refresh');
+  }
+
   static async registration(
     username: string,
     password: string,

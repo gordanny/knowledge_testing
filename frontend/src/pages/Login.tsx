@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { RouteNames } from '../enums/routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
@@ -21,15 +21,18 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { error, isLoading } = useTypedSelector(state => state.auth);
+  const { error, isLoading, isAuth } = useTypedSelector(state => state.auth);
+
+  if (isAuth) {
+    return <Navigate to={RouteNames.MAIN} />;
+  }
 
   const loginHandler = () => {
     dispatch(AuthActionCreators.login(username, password));
   };
 
   const registrationHandler = () => {
-    return navigate(RouteNames.REGISTRATION);
+    return <Navigate to={RouteNames.REGISTRATION} />;
   };
 
   return (

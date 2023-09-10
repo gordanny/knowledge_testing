@@ -13,9 +13,9 @@ export default function testsReducer(
   action: TestsAction
 ): TestsState {
   switch (action.type) {
-    case TestsActionType.SET_ERROR:
+    case TestsActionType.SET_TESTS_ERROR:
       return { ...state, error: action.payload, isLoading: false };
-    case TestsActionType.SET_IS_LOADING:
+    case TestsActionType.SET_TESTS_IS_LOADING:
       return { ...state, isLoading: action.payload };
     case TestsActionType.SET_TESTS:
       return { ...state, tests: action.payload };

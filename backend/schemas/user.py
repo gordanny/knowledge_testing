@@ -33,4 +33,3 @@ class UserResponse(UserBase):
 class UserAuthResponse(BaseModel):
     user: UserResponse
     access_token: str = Field(serialization_alias='accessToken')
-    refresh_token: str = Field(serialization_alias='refreshToken')
