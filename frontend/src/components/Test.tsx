@@ -66,7 +66,7 @@ const Test: React.FunctionComponent<ITestProps> = ({
           questionDescription: question.description,
           userAnswer: question.answers.find(a => a.id == userAnswer).text,
           rightAnswer: rightAnswer.answer,
-          isRight: userAnswer === rightAnswer.answer,
+          isRight: Number(userAnswer) === rightAnswer.id,
         };
       })
     );

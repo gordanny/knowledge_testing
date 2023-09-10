@@ -16,7 +16,7 @@ def get_right_answers(answers_ids: list[int] | None = None):
 
 def get_right_answers_by_test_id(test_id: int):
     with database.get_session() as session:
-        query = session.query(TestQuestion.question_number, Answer.text) \
+        query = session.query(TestQuestion.question_number, Answer.text, Answer.id) \
             .join(Answer, Answer.question_id == TestQuestion.question_id) \
             .filter(Answer.is_right, TestQuestion.test_id == test_id)
         query = query.all()

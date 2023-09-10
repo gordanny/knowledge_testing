@@ -12,3 +12,4 @@ class AnswerBase(BaseFromOrmModel):
 class RightAnswers(BaseFromOrmModel):
     question_number: int = Field(serialization_alias='questionNumber')
     answer: str = Field(validation_alias='text')
+    id: int
