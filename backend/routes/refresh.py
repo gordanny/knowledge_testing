@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get('/refresh', response_model=UserAuthResponse)
-def refresh_token(refresh_token: Annotated[str | None, Cookie()] = None):
+def refresh_token(refresh_token: Annotated[str | None, Cookie()]):
     token_exception = HTTPException(
         status_code=401,
         detail='Could not validate refresh credentials',

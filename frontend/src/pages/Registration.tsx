@@ -1,7 +1,7 @@
 import { Button, Card, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { RouteNames } from '../enums/routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
@@ -12,6 +12,7 @@ export interface IRegistrationProps {}
 
 const Registration: React.FunctionComponent<IRegistrationProps> = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { isAuth } = useTypedSelector(state => state.auth);
 
@@ -41,7 +42,7 @@ const Registration: React.FunctionComponent<IRegistrationProps> = () => {
   };
 
   const loginHandler = () => {
-    return <Navigate to={RouteNames.LOGIN} />;
+    navigate(RouteNames.LOGIN);
   };
 
   return (

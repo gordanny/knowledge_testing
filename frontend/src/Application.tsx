@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import PrivateRoutes from './components/PrivateRoutes';
+import Statistics from './components/Statistics';
 import { RouteNames } from './enums/routes';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import Login from './pages/Login';
@@ -45,6 +46,7 @@ const Application: React.FunctionComponent<IApplicationProps> = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<PrivateRoutes />}>
+          <Route path={RouteNames.STATISTICS} element={<Statistics />} />
           <Route path={RouteNames.MAIN} element={<Main />} />
         </Route>
         <Route path={RouteNames.REGISTRATION} element={<Registration />} />

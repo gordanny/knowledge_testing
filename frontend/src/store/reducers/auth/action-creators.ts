@@ -56,6 +56,7 @@ export const AuthActionCreators = {
       dispatch(AuthActionCreators.setAuthUser(response.data.user));
       dispatch(AuthActionCreators.setAuthIsLoading(false));
     } catch (e) {
+      dispatch(AuthActionCreators.setIsAuth(false));
       dispatch(AuthActionCreators.setAuthError(e.response?.data?.message));
       dispatch(AuthActionCreators.setAuthIsLoading(false));
     }
