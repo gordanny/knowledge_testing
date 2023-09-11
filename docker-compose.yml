@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  kt_backend:
+    build: /backend
+    container_name: kt_backend
+    restart: always
+    volumes:
+      - ./backend/:/root/knowledge_testing
+    working_dir: /root/knowledge_testing
+    environment:
+      - DB_HOST=kt_db
+    ports:
+      - "8081:8081"
+    command: >
+      sh -c "alembic upgrade heads
+               python main.py"
+    depends_on:
+      kt_db:
+        condition: service_healthy
+    networks:
+      - kt-dev-network
+
+  kt_frontend:
+    image: node:alpine
+    restart: always
+    container_name: kt_frontend
+    volumes:
+      - ./frontend/:/root/knowledge_testing
+      - ./frontend/node_modules/:/folder/fileToBeExcluded
+    working_dir: /root/knowledge_testing
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "npm i --legacy-peer-deps
+               npm run dev"
+    networks:
+      - kt-dev-network
+
+  kt_db:
+    container_name: kt_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=knowledge_testing
+    volumes:
+      - ./db/scripts/:/docker-entrypoint-initdb.d
+    image: postgres:14-alpine3.18
+    networks:
+      - kt-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  kt-dev-network:
+    driver: bridge
