@@ -8,13 +8,16 @@ export interface IBasicStackingProps {
 const BasicStacking: React.FunctionComponent<IBasicStackingProps> = ({
   answersStats,
 }) => {
-  const ra = answersStats?.map(question => question.rightAnswers);
-  const wa = answersStats?.map(question => question.wrongAnswers);
+  const rightAnswers = answersStats?.map(question => question.rightAnswers);
+  const wrongAnswers = answersStats?.map(question => question.wrongAnswers);
+  const questionNumbers = answersStats?.map(
+    question => question.questionNumber
+  );
 
   const series = [
     {
       ...{
-        data: ra,
+        data: rightAnswers,
         label: 'Правильно',
         color: '#4a8cc7',
       },
@@ -22,7 +25,7 @@ const BasicStacking: React.FunctionComponent<IBasicStackingProps> = ({
     },
     {
       ...{
-        data: wa,
+        data: wrongAnswers,
         label: 'Неправильно',
         color: '#e15759',
       },
@@ -42,6 +45,12 @@ const BasicStacking: React.FunctionComponent<IBasicStackingProps> = ({
         width={600}
         height={300}
         series={series}
+        xAxis={[
+          {
+            data: questionNumbers,
+            scaleType: 'band',
+          },
+        ]}
         sx={{ '--ChartsLegend-rootSpacing': '40px' }}
       />
     </div>
